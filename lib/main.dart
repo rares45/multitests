@@ -1,9 +1,12 @@
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multitests/classes/tests_registry.dart';
+import 'package:multitests/firebase_options.dart';
 import 'package:multitests/pages/category_page.dart';
 import 'package:multitests/pages/home_page.dart';
 import 'package:multitests/pages/page_404.dart';
@@ -14,7 +17,7 @@ import 'package:multitests/tests/tests.dart';
 import 'package:multitests/utils/constants/eula.dart';
 import 'package:multitests/widgets/multitests_about_widgets.dart';
 
-void main() {
+void main() async {
   LicenseRegistry.addLicense(
     () => Stream<LicenseEntry>.value(
       const LicenseEntryWithLineBreaks(
@@ -23,9 +26,16 @@ void main() {
       ),
     ),
   );
+
   TestRegistry.addMultiTest(purityTest);
 
   runApp(MultiTestsApp());
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseAnalytics.instance;
+
   SystemChrome.setEnabledSystemUIMode(
     SystemUiMode.edgeToEdge,
   ); // Enable Edge-to-Edge on Android 10+
@@ -78,7 +88,7 @@ class MultiTestsApp extends StatelessWidget {
                   builder: (context, state) {
                     return ResultPage(state.extra as TestResult);
                   },
-                  redirect: (state) {
+                  redirect: (context, state) {
                     if (state.extra == null) {
                       return '/test/${state.params['testID']}';
                     }

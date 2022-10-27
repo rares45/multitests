@@ -1,4 +1,5 @@
 import 'package:animations/animations.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multitests/classes/multi_icons_icons.dart';
@@ -100,9 +101,17 @@ class _QuesionPageAxisState extends State<_QuesionPageAxis> {
               ? FloatingActionButton.extended(
                   heroTag: null,
                   onPressed: () {
+                    TestResult testResult = _testProvider.finnish();
+                    FirebaseAnalytics.instance.logEvent(
+                      name: 'test_end',
+                      parameters: {
+                        'test_id': _testProvider.testID,
+                        'test_result': testResult.resultValue,
+                      },
+                    );
                     context.go(
                       '/test/${_testProvider.testID}/result',
-                      extra: _testProvider.finnish(),
+                      extra: testResult,
                     );
                   },
                   icon: const Icon(Icons.done_rounded),

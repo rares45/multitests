@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "33701522106",
+    "project_id": "multitests-d8913",
+    "storage_bucket": "multitests-d8913.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33701522106:android:4fb0f3b31e7e175451f083",
+        "android_client_info": {
+          "package_name": "com.perceivers25.multitests"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33701522106-o7g2rc51m2lpp7qgoaaaqc1fsu9t2dse.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1lnuekNxZ_s0a8SShztAno5t8ZnplfkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33701522106-o7g2rc51m2lpp7qgoaaaqc1fsu9t2dse.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

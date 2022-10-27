@@ -70,8 +70,9 @@ enum TestCategory {
 }
 
 enum TestDataCollection {
-  ethnicity('ethnicity', 'Collects simple data about your ethnicity'),
-  personality('personality', 'Might collect the result of this test');
+  results('results', 'Might collect the result of this test'),
+  actions('your actions', 'Will record anonymously some of your actions'),
+  gender('gender', 'Might deduct your gender. This will be stored anonymously');
 
   const TestDataCollection(this.shortDescrption, this.longDescription);
   final String shortDescrption, longDescription;

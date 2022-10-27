@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:multitests/classes/question_response.dart';
 import 'package:multitests/classes/test_class.dart';
 
 const List<String> _possibleValues = [
@@ -211,7 +213,10 @@ Test purityTest = Test(
     TestCategory.maturity,
     TestCategory.nonScientific,
   ],
-  testDataCollections: [],
+  testDataCollections: [
+    TestDataCollection.results,
+    TestDataCollection.actions,
+  ],
   testSuggestions: [
     'Do this test ONLY IF YOU ARE AT LEAST 16 YEARS OLD',
     'Click on every item you have done.',
@@ -235,6 +240,9 @@ Test purityTest = Test(
     );
     did = did ~/ 1.17;
     String purityLabel = _possibleValues[(100 - did) ~/ 25];
+
+    registerDataInFirebase(responseMap);
+
     return TestResult(
       'Your Purity Level',
       resultValue: 100 - did,
@@ -242,3 +250,43 @@ Test purityTest = Test(
     );
   },
 );
+
+Future<void> registerDataInFirebase(
+    Map<String, QuestionResponse> responseMap) async {
+  List<String> searchFors = [
+    '.Been in a relationship?',
+    '.Kissed on the lips?',
+    '.Cheated on a significant other during a relationship?',
+    '.Ingested alcohol in a non-religious context?',
+    '.Been drunk?',
+    '.Used tobacco?',
+    '.Used marijuana?',
+    '.Used a drug stronger than marijuana?',
+    '.Shoplifted/stolen?',
+    '.Masturbated?',
+    '.Gave oral sex?',
+    '.Received oral sex?',
+    '.Purchased contraceptives?',
+    '.Had sexual intercourse?',
+    '.69?',
+    '.Had a STI?',
+    '.Joined the mile high club? (Respect gainer)',
+    '.Physically hurt someone?',
+    '.Killed someone without an ethical reason?',
+    '.Impregnated someone or been impregnated?',
+  ];
+
+  responseMap.forEach(
+    (key, value) {
+      if (searchFors.contains(key) && (value.boolChoice ?? false)) {
+        FirebaseAnalytics.instance.logEvent(
+          name: 'test_question_response',
+          parameters: {
+            'test': 'purity_test',
+            'question': key,
+          },
+        );
+      }
+    },
+  );
+}

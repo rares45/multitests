@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multitests/classes/multi_icons_icons.dart';
@@ -51,6 +52,11 @@ class TestPage extends StatelessWidget {
                           test.testUrl,
                           platforms: SharePlatform.defaults,
                           isUrl: true,
+                        );
+                        FirebaseAnalytics.instance.logShare(
+                          contentType: 'test',
+                          itemId: test.id,
+                          method: 'platform share',
                         );
                       },
                     ),
@@ -286,6 +292,13 @@ class TestPage extends StatelessWidget {
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               context.go('/test/${test.id}/run');
+              FirebaseAnalytics.instance.logEvent(
+                name: 'test_start',
+                parameters: {
+                  'test_id': test.id,
+                  'test_version': test.version,
+                },
+              );
             },
             label: const Text('Start test'),
             icon: Icon(MultiIcons.start),

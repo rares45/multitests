@@ -1,3 +1,4 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:multitests/classes/test_class.dart';
@@ -51,6 +52,11 @@ class TestTile extends StatelessWidget {
                         test.testUrl,
                         platforms: SharePlatform.defaults,
                         isUrl: true,
+                      );
+                      FirebaseAnalytics.instance.logShare(
+                        contentType: 'test',
+                        itemId: test.id,
+                        method: 'platform share',
                       );
                     },
                   ),
